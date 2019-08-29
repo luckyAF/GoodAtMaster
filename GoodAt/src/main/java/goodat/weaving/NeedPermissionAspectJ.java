@@ -12,23 +12,13 @@ import org.aspectj.lang.annotation.Pointcut;
  */
 @Aspect
 public class NeedPermissionAspectJ {
-    @Pointcut("within(@goodat.weaving.NeedPermission *)")
-    public void withinAnnotatedClass() {
-    }
+    private static final String POINTCUT_METHOD = "execution(@goodat.weaving.NeedPermission * *(..))";
 
-    @Pointcut("execution(!synthetic * *(..)) && withinAnnotatedClass()")
-    public void methodInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(!synthetic *.new(..)) && withinAnnotatedClass()")
-    public void constructorInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(@goodat.weaving.NeedPermission * *(..)) || methodInsideAnnotatedType()")
+    @Pointcut(POINTCUT_METHOD)
     public void method() {
-    } //方法切入点
+    }
 
-    @Around("(method()) && @annotation(needPermission)")
+    @Around("method() && @annotation(needPermission)")
     public void aroundJoinPoint(final ProceedingJoinPoint joinPoint, NeedPermission needPermission) {
         //执行请求操作
         GoodAt.requestPermission(needPermission.value(), new GoodAt.ApplyCallback() {

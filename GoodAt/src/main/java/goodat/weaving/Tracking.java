@@ -16,9 +16,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE, METHOD, CONSTRUCTOR})
 @Retention(RUNTIME)
-public @interface Tracking {
-    /**
-     * @return 日志的优先级(默认是0，-1则打log)
-     */
-    int priority() default 0;
+public @interface Tracking{
+
 }

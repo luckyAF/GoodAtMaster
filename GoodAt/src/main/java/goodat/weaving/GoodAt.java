@@ -9,6 +9,7 @@ public final class GoodAt {
 
     private static Interceptor mInterceptor = null;
     private static PermissionApply mPermissionApply = null;
+    private static boolean DEBUG = true;
     /**
      * 上一次调用的时间
      */
@@ -31,6 +32,11 @@ public final class GoodAt {
         mPermissionApply = permissionApply;
     }
 
+    public static void setDebug(boolean isDebug){
+        DEBUG = isDebug;
+    }
+
+
      static boolean intercept(int type){
         if(null != mInterceptor){
             return mInterceptor.handle(type);
@@ -38,6 +44,10 @@ public final class GoodAt {
         return false;
     }
 
+
+    static boolean isDebug(){
+        return DEBUG;
+    }
 
 
     /**

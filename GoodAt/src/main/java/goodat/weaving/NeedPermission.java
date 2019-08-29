@@ -7,6 +7,7 @@ package goodat.weaving;
  */
 
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -19,7 +20,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
  * @author Created by luckyAF
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({METHOD, PARAMETER})
+@Target(ElementType.METHOD)
 public @interface NeedPermission {
     /**
      * @return 需要申请权限的集合

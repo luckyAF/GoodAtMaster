@@ -20,28 +20,8 @@ import goodat.weaving.internal.ReflectUtils;
  */
 @Aspect
 public class HookMethodAspectJ {
-    @Pointcut("within(@goodat.weaving.HookMethod *)")
-    public void withinAnnotatedClass() {
-    }
-
-    @Pointcut("execution(!synthetic * *(..)) && withinAnnotatedClass()")
-    public void methodInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(!synthetic *.new(..)) && withinAnnotatedClass()")
-    public void constructorInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(@goodat.weaving.HookMethod * *(..)) || methodInsideAnnotatedType()")
-    public void method() {
-    }
-
-    @Pointcut("execution(@goodat.weaving.HookMethod *.new(..)) || constructorInsideAnnotatedType()")
-    public void constructor() {
-    }
-
-
-    @Around("method() || constructor()")
+    private static final String POINTCUT_METHOD = "execution(@goodat.weaving.HookMethod * *(..))";
+    @Around(POINTCUT_METHOD)
     public Object hookMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

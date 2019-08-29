@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-aspectjx'
 
 android {
     compileSdkVersion 28
@@ -9,6 +10,8 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,14 +20,87 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        abortOnError false
+    }
+
 }
+aspectjx {
+    //alipay切入会报错，此处不切入alipay相关包内代码
+    exclude 'com.samskivert'
+    exclude 'com/samskivert'
+
+}
+
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+
+    //implementation 'com.luckyaf:GoodAt:0.1.0'
+    implementation project(":GoodAt")
+
+    // kotlin
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$rootProject.kotlinVersion"
+    // android support
+    implementation "com.android.support:appcompat-v7:$rootProject.androidSupportVsersion"
+    implementation "com.android.support:cardview-v7:$rootProject.androidSupportVsersion"
+    implementation "com.android.support:design:$rootProject.androidSupportVsersion"
+    implementation "com.android.support:support-annotations:$rootProject.androidSupportVsersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.androidSupportVsersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    implementation "com.google.android:flexbox:$rootProject.flexBoxVersion"
+
+    // rxjava 网络
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
+
+    // tools
+    implementation "com.luckyaf:GoodAt:$rootProject.goodAtVersion"
+
+    implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion" // eventBus
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"  // gson
+    //implementation "me.jessyan:autosize:$rootProject.autosizeVersion"     // 布局适配
+    implementation "com.tencent:mmkv:$rootProject.mmkvVersion"           // 存取
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.github.lygttpod:SuperTextView:$rootProject.superTextViewVersion"
+    implementation "com.alibaba:fastjson:$rootProject.fastjsonVersion"   // fastjson
+    implementation "com.flyco.tablayout:FlycoTabLayout_Lib:$rootProject.flycoTabLayout_Lib"    //FlycoTabLayout
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.BaseRecyclerViewAdapterHelper"
+    implementation "com.contrarywind:Android-PickerView:$rootProject.PickerView"
+    implementation "com.scwang.smartrefresh:SmartRefreshLayout:$rootProject.SmartRefreshLayout"
+    implementation "com.scwang.smartrefresh:SmartRefreshHeader:$rootProject.SmartRefreshLayout"
+    implementation "com.github.pinguo-zhouwei:CustomPopwindow:$rootProject.CustomPopwindow"
+//    compile 'com.android.support:support-v4:23.1.1'
+
+    implementation "org.jetbrains.anko:anko-coroutines:$rootProject.ankoVersion"
+
+    implementation "com.google.zxing:core:$rootProject.zxingVersion"
+    implementation "cn.bingoogolapple:bga-qrcode-zxing:$rootProject.qrcodeVersion"
+    implementation "com.luckyaf:imageselection:$rootProject.imageSelectionVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation "it.sephiroth.android.library.imagezoom:imagezoom:$rootProject.imagezoomVersion"
+
+    implementation  "com.lxj:xpopup:$rootProject.xPopupVersion"
+
+    implementation "com.samskivert:jmustache:1.15"
+
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+
+
+
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

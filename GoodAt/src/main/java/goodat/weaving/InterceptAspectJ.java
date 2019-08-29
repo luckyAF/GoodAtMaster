@@ -16,27 +16,14 @@ import org.aspectj.lang.annotation.Pointcut;
  */
 @Aspect
 public class InterceptAspectJ {
-    @Pointcut("within(@goodat.weaving.Intercept *)")
-    public void withinAnnotatedClass() {
-    }
 
-    @Pointcut("execution(!synthetic * *(..)) && withinAnnotatedClass()")
-    public void methodInsideAnnotatedType() {
-    }
+    private static final String POINTCUT_METHOD = "execution(@goodat.weaving.Intercept * *(..))";
 
-    @Pointcut("execution(!synthetic *.new(..)) && withinAnnotatedClass()")
-    public void constructorInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(@goodat.weaving.Intercept * *(..)) || methodInsideAnnotatedType()")
+    @Pointcut(POINTCUT_METHOD)
     public void method() {
-    } //方法切入点
+    }
 
-    @Pointcut("execution(@goodat.weaving.Intercept *.new(..)) || constructorInsideAnnotatedType()")
-    public void constructor() {
-    } //构造器切入点
-
-    @Around("(method() || constructor()) && @annotation(intercept)")
+    @Around("method() && @annotation(intercept)")
     public Object aroundJoinPoint(ProceedingJoinPoint joinPoint, Intercept intercept) throws Throwable {
         //执行拦截操作
         boolean result = proceedIntercept(intercept.value(), joinPoint);

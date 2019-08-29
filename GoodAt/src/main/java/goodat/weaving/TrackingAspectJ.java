@@ -35,33 +35,17 @@ public class TrackingAspectJ {
     private static String MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_LINE + SINGLE_LINE;
     private static SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
+    private static final String POINTCUT_METHOD = "execution(@goodat.weaving.Tracking * *(..))";
 
-    @Pointcut("within(@goodat.weaving.Tracking *)")
-    public void withinAnnotatedClass() {
-    }
-
-    @Pointcut("execution(!synthetic * *(..)) && withinAnnotatedClass()")
-    public void methodInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(!synthetic *.new(..)) && withinAnnotatedClass()")
-    public void constructorInsideAnnotatedType() {
-    }
-
-    @Pointcut("execution(@goodat.weaving.Tracking * *(..)) || methodInsideAnnotatedType()")
+    @Pointcut(POINTCUT_METHOD)
     public void method() {
     }
 
-    @Pointcut("execution(@goodat.weaving.Tracking *.new(..)) || constructorInsideAnnotatedType()")
-    public void constructor() {
-    }
-
-
-    @Around("method() || constructor()")
-    public Object traceMethod(final ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("method() &&  @annotation(tracking)")
+    public Object traceMethod(final ProceedingJoinPoint joinPoint,Tracking tracking) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Tracking tracking = methodSignature.getMethod().getAnnotation(Tracking.class);
-        if (tracking == null || !BuildConfig.DEBUG) {
+
+        if (tracking == null || ! GoodAt.isDebug()) {
             return joinPoint.proceed();
         }
         CodeSignature codeSignature = (CodeSignature) joinPoint.getSignature();
